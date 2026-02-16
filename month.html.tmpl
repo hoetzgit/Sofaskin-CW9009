@@ -4,44 +4,26 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta http-equiv="Refresh" content="180">
-    #if $Extras.has_key('cwop')
-    <meta name="description" content="Monthly Weather Summary for $station.location Weather Station ($Extras.cwop). This web site is powered by WeeWX">
+    #if 'cwop' in $Extras
+    <meta name="description" content="Monthly Weather Summary for $station.location Weather Station ($Extras.cwop). This web site is powered by WeeWX.">
     #else
-    <meta name="description" content="Monthly Weather Summary for $station.location Weather Station. This web site is powered by WeeWX">
+    <meta name="description" content="Monthly Weather Summary for $station.location Weather Station. This web site is powered by WeeWX.">
     #end if
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="manifest" href="manifest.webmanifest" crossorigin="use-credentials">
     <link rel="profile" href="https://gmpg.org/xfn/11" />
-    #if $Extras.has_key('web_url')
-    <link href="$Extras.web_url/month.html" itemprop="url"/>
+    #if 'web_url' in $Extras
+    <link rel="canonical" href="$Extras.web_url"/>
     #end if
-    <title itemprop="name">$station.location Monthly Weather Summary</title>
-    <!-- Open Graph -->
-    <meta property="og:site_name" content="$station.location Monthly Weather Summary" />
-    <meta property="og:title" content="Monthly Weather Summary for $station.location"/>
-    #if $Extras.has_key('web_url')
-    <meta property="og:url" content="$Extras.web_url/month.html"/>
-    #end if
-    <meta property="og:description" content="Monthly Weather Summary for $station.location Weather Station. This web site is powered by WeeWX" />
-    <meta property="og:type" content="website" />
-    <!-- FavIcons -->
-    <link rel="icon" href="favicon.ico" type="image/png">
-    <link rel="apple-touch-icon" href="touch-icon.png"/>
-        
-    <!-- Styles -->
+    <title>$station.location Monthly Weather Summary</title>
+    
     <link href="https://fonts.googleapis.com/css?family=Lato:300,400,700" rel="stylesheet" type="text/css">
     <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
 
-    <!-- Font Awesome Icon links -->
-   
-    <!-- Free license -->
-    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v7.0.0/css/all.css" crossorigin="anonymous">
-
-    <!-- Script -->
-    <script src="js/modernizr-2.6.2.min.js"></script>
     <script src="js/checkdiff.js"></script>
-
   </head>
+  
   <body>
     <header>
       <div class="container-fix" >
@@ -78,7 +60,7 @@
         <nav>
           <ul class="topnav" id="myTopnav">
             <li class="icon"><a href="javascript:void(0);" onclick="myFunction()"><i class="fa-solid fa-bars" ></i></a></li>
-            <li><a href="index.html" >Current</a></li>
+            <li><a href="/" >Current</a></li>
             <li><a href="week.html" >Week</a></li>
             <li class="active"><a href="month.html" >Month</a></li>
             <li><a href="year.html" >Year</a></li>
@@ -87,6 +69,9 @@
             <li><a href="RSS/weewx_rss.xml" ><i class="fa-solid fa-rss" ></i></a></li>
             #if $Extras.has_key('twitter_url')
             <li><a href=$Extras.twitter_url><i class="fa-brands fa-twitter" ></i></a></li>
+            #end if
+            #if $Extras.has_key('youtube_url')
+            <li><a href=$Extras.youtube_url><i class="fa-brands fa-youtube" ></i></a></li>
             #end if
           </ul>
         </nav>
@@ -615,7 +600,7 @@
     <footer>
       <div class="container-fix">
         <div style="text-align:center">
-          #if $Extras.has_key('you')
+          #if 'you' in $Extras
           <i class="fa-solid fa-dragon"> </i><a href=mailto:$Extras.email> $Extras.you</a> 
           #end if
           &sdot;
@@ -629,7 +614,7 @@
         </div>
       </div>
     </footer>
-    #if $Extras.has_key('googleAnalyticsId')
+    #if 'googleAnalyticsId' in $Extras
     <!-- Global site tag (gtag.js) - Google Analytics -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=$Extras.googleAnalyticsId"></script>
     <script>
@@ -652,4 +637,3 @@
     </script>
   </body>
 </html>
-
