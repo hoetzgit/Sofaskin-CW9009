@@ -67,10 +67,10 @@
             <li><a href="summary.html" >Summaries</a></li>
             <li><a href="about.html" >About</a></li>
             <li><a href="RSS/weewx_rss.xml" ><i class="fa-solid fa-rss" ></i></a></li>
-            #if $Extras.has_key('twitter_url')
-            <li><a href=$Extras.twitter_url><i class="fa-brands fa-twitter" ></i></a></li>
-            #end if
-            #if $Extras.has_key('youtube_url')
+            #if 'twitter_url' in $Extras
+	        <li><a href=$Extras.twitter_url><i class="fa-brands fa-twitter" ></i></a></li>
+	        #end if
+	        #if 'youtube_url' in $Extras
             <li><a href=$Extras.youtube_url><i class="fa-brands fa-youtube" ></i></a></li>
             #end if
           </ul>
