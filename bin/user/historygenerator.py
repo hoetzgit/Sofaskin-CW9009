@@ -5,7 +5,7 @@
 #
 """Extends the Cheetah generator search list to add html historic data tables in a nice colour scheme.
 
-Tested on Weewx release 4.0.0.
+Tested on Weewx release 5.2.0.
 Works with all databases.
 Observes the units of measure and display formats specified in skin.conf.
 
@@ -386,13 +386,13 @@ class MyXSearch(SearchList):
         return cellText
 
     def _NoaaCell(self, dt, table_options):
-        cellText = '<td> <a href="text.php?report=%s" class="btn btn-default btn-xs active" role="button"> %s </a> </td>' % \
+        cellText = '<td> <a href="text.html?report=%s" class="btn btn-default btn-xs active" role="button"> %s </a> </td>' % \
                    (dt.strftime(table_options['month_filename']), dt.strftime("%m-%y"))
 
         return cellText
 
     def _NoaaYear(self, dt, table_options):
-        cellText = '<td> <a href="text.php?report=%s" class="btn btn-primary btn-xs active" role="button"> %s </a> </td>' % \
+        cellText = '<td> <a href="text.html?report=%s" class="btn btn-primary btn-xs active" role="button"> %s </a> </td>' % \
                    (dt.strftime(table_options['year_filename']), dt.strftime("%Y"))
 
         return cellText
