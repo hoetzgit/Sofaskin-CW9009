@@ -4,76 +4,26 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta http-equiv="Refresh" content="180">
-    <!-- Google verification tag -->
-    <meta name="google-site-verification" content="skDuSC68YDlkfq2GfylRvmzM4WE5RgCKZIV275lKZ1A" />
-    #if $Extras.has_key('cwop')
-    <meta name="description" content="A $station.hardware weather station reporting current weather conditions from the Century Farm Subdivision in $station.location ($Extras.cwop). This web site is powered by WeeWx. ">
+    #if 'cwop' in $Extras
+    <meta name="description" content="A $station.hardware weather station reporting current weather conditions from $station.location ($Extras.cwop). This site is powered by WeeWX.">
     #else
-    <meta name="description" content="A $station.hardware weather station reporting current weather conditions from the Century Farm Subdivision in $station.location. This web site is powered by WeeWx. ">
+    <meta name="description" content="A $station.hardware weather station reporting current weather conditions from $station.location. This site is powered by WeeWX.">
     #end if
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="manifest" href="manifest.webmanifest" crossorigin="use-credentials">
     <link rel="profile" href="https://gmpg.org/xfn/11" />
-    #if $Extras.has_key('web_url')
+    #if 'web_url' in $Extras
     <link rel="canonical" href="$Extras.web_url"/>
     #end if
     <title>$station.location Current Weather Conditions</title>
-    <!-- Open Graph -->
-    #if $Extras.has_key('cwop')
-    <meta property="og:site_name" content="$station.location Weather Station ($Extras.cwop)" />
-    <meta property="og:title" content="$station.location ($Extras.cwop) Current Weather Conditions"/>
-    #else
-    <meta property="og:site_name" content="$station.location Weather Station" />
-    <meta property="og:title" content="$station.location Current Weather Conditions"/>
-    #end if
-    #if $Extras.has_key('web_url')
-    <meta property="og:image" content="$Extras.web_url/daytempdew.png"/>
-    <meta property="og:url" content="$Extras.web_url"/>
-    #end if
-    #if $Extras.has_key('cwop')
-    <meta property="og:description" content="A $station.hardware weather station reporting current weather conditions from the Century Farm Subdivision in $station.location ($Extras.cwop). This web site is powered by WeeWx. " />
-    #else
-    <meta property="og:description" content="A $station.hardware weather station reporting current weather conditions from the Century Farm Subdivision in $station.location ($Extras.cwop). This web site is powered by WeeWx. " />
-    #end if
-    <meta property="og:type" content="website" />
-    <!--SM Markups -->
-    #if $Extras.has_key('cwop')
-    <meta itemprop="name" content="Current Weather Conditions for station.location ($Extras.cwop) "/>
-    #else
-    <meta itemprop="name" content="Current Weather Conditions for $station.location"/>
-    #end if
-    <meta itemprop="image" content="$Extras.web_url/daytempdew.png"/>
-    #if $Extras.has_key('web_url')
-    <meta itemprop="url" content="$Extras.web_url"/>
-    #end if
-    #if $Extras.has_key('cwop')
-    <meta itemprop="description" content="A $station.hardware weather station reporting current weather conditions from the Century Farm Subdivision in $station.location ($Extras.cwop). This web site is powered by WeeWx. " />
-    #else
-    <meta itemprop="description" content="A $station.hardware weather station reporting current weather conditions from the Century Farm Subdivision in $station.location ($Extras.cwop). This web site is powered by WeeWx. " />
-    #end if
-    #if $Extras.has_key('keywords_meta')
-    <meta name="keywords" content="$Extras.keywords_meta" />
-    #end if
-
-    <!-- FavIcons -->
-    <link rel="icon" href="favicon.ico" type="image/png">
-    <link rel="apple-touch-icon" href="touch-icon.png"/>
-        
-    <!-- Styles -->
+    
     <link href="https://fonts.googleapis.com/css?family=Lato:300,400,700" rel="stylesheet" type="text/css">
     <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
 
-    <!-- Font Awesome Icon links -->
-   
-    <!-- Free license -->
-    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v7.0.0/css/all.css" crossorigin="anonymous">
-
-
-    <!-- Script -->
-    <script src="js/modernizr-2.6.2.min.js"></script>
     <script src="js/checkdiff.js"></script>
-
   </head>
+
   <body>
     <header>
       <div class="container-fix" >
@@ -117,10 +67,10 @@
             <li><a href="summary.html" >Summaries</a></li>
             <li><a href="about.html" >About</a></li>
             <li><a href="RSS/weewx_rss.xml" ><i class="fa-solid fa-rss" ></i></a></li>
-            #if $Extras.has_key('twitter_url')
+            #if 'twitter_url' in $Extras
             <li><a href=$Extras.twitter_url><i class="fa-brands fa-twitter" ></i></a></li>
             #end if
-            #if $Extras.has_key('youtube_url')
+            #if 'youtube_url' in $Extras
             <li><a href=$Extras.youtube_url><i class="fa-brands fa-youtube" ></i></a></li>
             #end if
           </ul>
@@ -603,7 +553,7 @@
           </div>
           #end if
           
-          #if $Extras.has_key('radar')
+          #if 'radar' in $Extras
           <div class="card" >
 	    <h1><i class="fa-solid fa-satellite-dish m-rot"></i> Radar</h1>
             $Extras.radar
@@ -611,19 +561,17 @@
           </div>
           #end if
 
-          #if $Extras.has_key('lightning_map')
+          #if 'lightning_map' in $Extras
           <div class="card" >
-            #if $Extras.has_key('lightning_url')
+            #if 'lightning_url' in $Extras
             <a href="$Extras.lightning_url" target="_blank">
-            #end if
             <img src="$Extras.lightning_map" alt="Lightning Map" class="space small" />
-            #if $Extras.has_key('lightning_url')
             </a>
             #end if
           </div>
           #end if
 
-          #if $Extras.has_key('camera')
+          #if 'camera' in $Extras
           <!--camera section-->
           <div class="card" >
             <h1><i class="fa-solid fa-camera" style="color:#999"></i> Local Cameras</h1>
@@ -677,8 +625,7 @@
             </script>
           </div>
           #end if
-        
-        #if $Extras.has_key('camloop')
+        #if 'camloop' in $Extras
           <!--camera loop section-->
           <div class="card" >
             <h1><i class="fa-solid fa-camera" style="color:#999"></i> Camera loop</h1>
@@ -874,7 +821,7 @@
     <footer>
       <div class="container-fix">
         <div style="text-align:center">
-          #if $Extras.has_key('you')
+          #if 'you' in $Extras
           <i class="fa-solid fa-dragon"> </i><a href=mailto:$Extras.email> $Extras.you</a> 
           #end if
           &sdot;
@@ -888,7 +835,7 @@
         </div>
       </div>
     </footer>
-    #if $Extras.has_key('googleAnalyticsId')
+    #if 'googleAnalyticsId' in $Extras
     <!-- Global site tag (gtag.js) - Google Analytics -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=$Extras.googleAnalyticsId"></script>
     <script>
@@ -911,4 +858,3 @@
     </script>
   </body>
 </html>
-
