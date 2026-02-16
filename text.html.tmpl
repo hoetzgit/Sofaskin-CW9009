@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head itemscope itemtype="https://schema.org/Website">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta http-equiv="Refresh" content="180">
+    
+    #if 'cwop' in $Extras
+    <meta name="description" content="$station.location Weather Station ($Extras.cwop) Climate Summary. This web site is powered by WeeWX">
+    #else
+    <meta name="description" content="$station.location Weather Station Climate Summary. This web site is powered by WeeWX">
+    #end if
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="manifest" href="manifest.webmanifest" crossorigin="use-credentials">
+    <link rel="profile" href="https://gmpg.org/xfn/11" />
+    
+    #if 'web_url' in $Extras
+    <link rel="canonical" href="$Extras.web_url/summary.html"/>
+    #end if 
+
+    <title id="dynamic-page-title">$station.location Climate Summary</title>
+
+    <link rel="icon" href="favicon.ico" type="image/png">
+    <link rel="apple-touch-icon" href="touch-icon.png"/>
+    <link href="https://fonts.googleapis.com/css?family=Lato:300,400,700" rel="stylesheet" type="text/css">
+    <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+
+    <script src="js/checkdiff.js"></script>
+
+    <script>
+        async function loadNoaaReport() {
+            const params = new URLSearchParams(window.location.search);
+            let reportFile = params.get('report'); 
+            
+            if (!reportFile) {
+                const year = new Date().getFullYear();
+                reportFile = "NOAA-" + year + ".txt";
+            }
+
+            const cleanFile = reportFile.split(/[\\/]/).pop();
+            const reportPath = "NOAA/" + cleanFile;
+
+            try {
+                const response = await fetch(reportPath);
+                if (!response.ok) throw new Error('File not found');
+                const text = await response.text();
+                
+                document.getElementById('noaa-content').textContent = text;
+                
+                const parts = cleanFile.replace('.txt', '').split('-');
+                let displayTitle = cleanFile.replace('.txt', ''); 
+
+                if (parts.length === 2) {
+                    displayTitle = parts[1]; 
+                } else if (parts.length === 3) {
+                    const monthNames = ["January", "February", "March", "April", "May", "June",
+                                        "July", "August", "September", "October", "November", "December"];
+                    const year = parts[1];
+                    const monthIndex = parseInt(parts[2], 10) - 1;
+                    if (monthNames[monthIndex]) {
+                        displayTitle = monthNames[monthIndex] + " " + year;
+                    }
+                }
+
+                const fullTitle = "$station.location Climate Summary for " + displayTitle;
+                document.getElementById('report-header-title').textContent = "Climate Summary for " + displayTitle;
+                document.getElementById('dynamic-page-title').textContent = fullTitle;
+
+            } catch (err) {
+                document.getElementById('noaa-content').innerHTML = "<p>Summary report not found.</p>";
+            }
+        }
+
+        window.onload = function() {
+            loadNoaaReport();
+            if (typeof checkDiff === "function") {
+                checkDiff("$current.dateTime ($current.dateTime.format('%Z'))");
+            }
+        };
+    </script>
+  </head>
+
+  <body>
+    <header>
+            <div class="container-fix" >
+                <div class="h-left" >
+                <h1><i class="fa-solid fa-cloud" ></i> $station.location </h1>
+                <p>$station.latitude[0]° $station.latitude[1]' $station.latitude[2] | $station.longitude[0]° $station.longitude[1]' $station.longitude[2] | $station.altitude | <a href="https://www.google.com/maps/?q=$station.latitude_f,$station.longitude_f" target="_blank" ><i class="fa-solid fa-location-dot" ></i> Show on map</a></p>
+                
+                <h2 id="report-header-title">Climate Summary</h2>
+                
+                <p><i class="fa-solid fa-clock" ></i> $current.dateTime $current.dateTime.format("%Z")</p>
+                <p id="freshweather" class="m-orange"></p>
+                </div>
+                
+                <div class="h-right" >
+                    <table>
+                        <tr><td><b>Station:</b></td><td>$station.hardware</td></tr>
+                        <tr><td><b>Software:</b></td><td><a href="https://weewx.com/" target="_blank" >WeeWX v$station.version</a></td></tr>
+                        <tr><td><b>Weewx uptime:</b></td><td>$station.uptime.long_form</td></tr>
+                        <tr><td><b>Server uptime:</b></td><td>$station.os_uptime.long_form</td></tr>
+                    </table>
+                </div>
+
+                <nav>
+                    <ul class="topnav" id="myTopnav">
+                        <li class="icon"><a href="javascript:void(0);" onclick="myFunction()"><i class="fa-solid fa-bars" ></i></a></li>
+                        <li><a href="/" >Current</a></li>
+                        <li><a href="week.html" >Week</a></li>
+                        <li><a href="month.html" >Month</a></li>
+                        <li><a href="year.html" >Year</a></li>
+                        <li class="active" ><a href="summary.html" >Summaries</a></li>
+                        <li><a href="about.html" >About</a></li>
+                        <li><a href="RSS/weewx_rss.xml" ><i class="fa-solid fa-rss" ></i></a></li>
+                        #if 'twitter_url' in $Extras
+	                    <li><a href=$Extras.twitter_url><i class="fa-brands fa-twitter" ></i></a></li>
+	                    #end if
+	                    #if 'youtube_url' in $Extras
+                        <li><a href=$Extras.youtube_url><i class="fa-brands fa-youtube" ></i></a></li>
+                        #end if
+                    </ul>
+                </nav>
+            </div>
+    </header>
+
+     <div class="main" >
+        <div class="container" >
+           <div class="center" >
+               <div class="card">
+                   <pre id="noaa-content" class="noaareport">Loading report data...</pre>
+               </div>
+           </div>   
+        </div>
+    </div>
+        
+    <footer>
+        <div style="text-align:center">
+            #if 'you' in $Extras
+            <i class="fa-solid fa-dragon"> </i><a href="mailto:$Extras.email"> $Extras.you</a>
+            #end if
+            ⋅
+            Copyright <i class="fa-regular fa-copyright"></i> $latest.dateTime.format("%Y")
+            <br>
+            Sofaskin by <a href="https://neoground.com">Neoground</a>
+            ⋅
+            CW9009 Version by <a href="https://www.centuryfarmweather.com">Century Farm Weather</a>
+            ⋅
+            Powered by<i class="fa-solid fa-cog fa-spin fa-fw" aria-hidden="true"></i><a href="https://weewx.com/" target="_blank">WeeWX</a>
+        </div>
+    </footer>
+
+    <script>
+        function myFunction() {
+            var x = document.getElementById("myTopnav");
+            if (x.className === "topnav") {
+                x.className += " responsive";
+            } else {
+                x.className = "topnav";
+            }
+        }
+    </script>
+  </body>
+</html>
